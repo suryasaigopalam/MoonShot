@@ -8,17 +8,30 @@
 import SwiftUI
 
 struct ContentView: View {
+    var astronauts:[String:Astronaut] = Bundle.main.decode("astronauts.json")
+    
+    var missions:[Mission] = Bundle.main.decode("missions.json")
+    @State var showGrid = false
+    
+    var columns = [GridItem(.adaptive(minimum: 150))]
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            VStack {
+                Toggle("ShowGrid", isOn: $showGrid)
+                Group {
+                    if showGrid {
+                        GridView(astronauts: astronauts, missions: missions)
+                    } else {
+                        ListView(astronauts: astronauts, missions: missions)
+                    }
+                }
+                .navigationTitle("My Group")
+            }
+            .padding()
+            .preferredColorScheme(.dark)
         }
-        .padding()
     }
 }
-
 #Preview {
     ContentView()
 }
